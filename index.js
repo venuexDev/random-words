@@ -246,25 +246,27 @@ var wordList = [
   "your","yourself","youth","zero","zebra","zipper","zoo","zulu"
 ];
 
+
+var longestWord = wordList.reduce(function (word1, word2) {
+  return word1.length > word2.length ? word1 : word2
+});
+
+
 function words(options) {
 
   function word() {
-    if (options && options.maxLength > 1) {
-      return generateWordWithMaxLength();
-    } else {
-      return generateRandomWord();
-    }
+    let maxLength = options && options.maxLength > 1 ? options.maxLength: longestWord.length;
+    let minLength = options && options.minLength <= longestWord.length ? options.minLength: 0;
+    return generateWordWithLimits(maxLength, minLength);
+   
   }
 
-  function generateWordWithMaxLength() {
+  function generateWordWithLimits(maxLength, minLength) {
     let rightSize = false;
     let wordUsed;
     while (!rightSize) {  
       wordUsed = generateRandomWord();
-      if(wordUsed.length <= options.maxLength) {
-        rightSize = true;
-      }
-
+     rightSize = (wordUsed.length <= maxLength && wordUsed.length >= minLength);
     }
     return wordUsed;
   }
